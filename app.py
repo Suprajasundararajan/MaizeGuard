@@ -633,7 +633,8 @@ with tab_arena:
                 m_name = row["model"]
                 size = row["model_size_mb"]
                 acc = row["accuracy"] * 100
-                color = "#10b981" if m_name == "MobileNetV2" else ("#f59e0b" if m_name == "EfficientNetB0" else "#3b82f6")
+                best_model_name = metadata.get("best_model", "best_model")
+                color = "#10b981" if m_name == best_model_name else ("#f59e0b" if m_name == "EfficientNetB0" else "#3b82f6")
                 ax.scatter(size, acc, s=220, color=color, zorder=5)
                 ax.annotate(f"{m_name}\n({acc:.1f}%, {size:.1f}MB)", (size, acc),
                             textcoords="offset points", xytext=(0, 10), ha="center", color="#e5e7eb", fontsize=8)
@@ -647,9 +648,10 @@ with tab_arena:
             st.pyplot(fig)
 
         with plot_col2:
-            st.markdown("##### 🔲 Confusion Matrix (Best Backbone: MobileNetV2)")
-            mb_data = next((d for d in details if d["model"] == "MobileNetV2"), details[0])
-            cm_matrix = np.array(mb_data["confusion_matrix"])
+            best_model_name = metadata.get("best_model", details[0]["model"])
+            st.markdown(f"##### 🔲 Confusion Matrix (Best Backbone: {best_model_name})")
+            best_data = next((d for d in details if d["model"] == best_model_name), details[0])
+            cm_matrix = np.array(best_data["confusion_matrix"])
 
             fig_cm, ax_cm = plt.subplots(figsize=(6, 4))
             fig_cm.patch.set_facecolor("#0e1511")
