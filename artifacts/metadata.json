@@ -1,0 +1,13 @@
+{
+  "class_names": [
+    "Blight",
+    "Common_Rust",
+    "Gray_Leaf_Spot",
+    "Healthy"
+  ],
+  "best_model": "ResNet50",
+  "image_size": [
+    256,
+    256
+  ]
+}
